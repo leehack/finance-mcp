@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:mcp_dart/mcp_dart.dart';
 
 import '../../data/models/financial_statements.dart';
@@ -150,9 +148,7 @@ class GetFinancialStatementsTool extends BaseTool {
         'statements': statements.map((s) => s.toJson()).toList(),
       };
 
-      return CallToolResult(
-        content: [TextContent(text: jsonEncode(result))],
-      );
+      return CallToolResult.fromStructuredContent(result);
     } catch (e) {
       return CallToolResult(
         content: [TextContent(text: 'Failed to fetch financials: $e')],

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:mcp_dart/mcp_dart.dart';
 
 import '../../data/services/financial_data_service.dart';
@@ -67,9 +65,7 @@ class GetCompanyInfoTool extends BaseTool {
         'cik': cik,
         'cik_formatted': cik.toString().padLeft(10, '0'),
       };
-      return CallToolResult(
-        content: [TextContent(text: jsonEncode(result))],
-      );
+      return CallToolResult.fromStructuredContent(result);
     } catch (e) {
       return CallToolResult(
         content: [TextContent(text: 'Failed to fetch company info: $e')],

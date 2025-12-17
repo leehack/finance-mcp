@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:mcp_dart/mcp_dart.dart';
@@ -113,8 +112,7 @@ void main() {
 
         expect(result.isError, isFalse);
 
-        final textContent = result.content.first as TextContent;
-        final data = jsonDecode(textContent.text) as Map<String, dynamic>;
+        final data = result.structuredContent!;
 
         // Verify response contains fields defined in schema
         for (final property in schemaProperties) {
@@ -149,8 +147,7 @@ void main() {
 
         expect(result.isError, isFalse);
 
-        final textContent = result.content.first as TextContent;
-        final data = jsonDecode(textContent.text) as Map<String, dynamic>;
+        final data = result.structuredContent!;
 
         // Verify response contains fields defined in schema
         // Note: Not all schema properties may be present if data is unavailable
@@ -190,10 +187,7 @@ void main() {
         );
 
         expect(result.isError, isFalse);
-        expect(result.content, isNotEmpty);
-
-        final textContent = result.content.first as TextContent;
-        final data = jsonDecode(textContent.text) as Map<String, dynamic>;
+        final data = result.structuredContent!;
 
         expect(data['ticker'], equals('AAPL'));
         expect(data['cik'], isA<int>());
@@ -240,10 +234,7 @@ void main() {
         );
 
         expect(result.isError, isFalse);
-        expect(result.content, isNotEmpty);
-
-        final textContent = result.content.first as TextContent;
-        final data = jsonDecode(textContent.text) as Map<String, dynamic>;
+        final data = result.structuredContent!;
 
         expect(data['ticker'], equals('AAPL'));
         expect(data['periodType'], equals('annual'));
@@ -274,8 +265,7 @@ void main() {
         );
 
         expect(result.isError, isFalse);
-        final textContent = result.content.first as TextContent;
-        final data = jsonDecode(textContent.text) as Map<String, dynamic>;
+        final data = result.structuredContent!;
 
         expect(data['ticker'], equals('MSFT'));
         expect(data['statements'], isNotEmpty);
@@ -302,8 +292,7 @@ void main() {
         );
 
         expect(result.isError, isFalse);
-        final textContent = result.content.first as TextContent;
-        final data = jsonDecode(textContent.text) as Map<String, dynamic>;
+        final data = result.structuredContent!;
 
         expect(data['ticker'], equals('GOOGL'));
         expect(data['statements'], isNotEmpty);
@@ -325,11 +314,8 @@ void main() {
         );
 
         // May return data or error depending on availability
-        expect(result.content, isNotEmpty);
-        final textContent = result.content.first as TextContent;
-
         if (result.isError == false) {
-          final data = jsonDecode(textContent.text) as Map<String, dynamic>;
+          final data = result.structuredContent!;
           expect(data['periodType'], equals('quarterly'));
           expect(data['statements'], isA<List<dynamic>>());
         }
@@ -347,11 +333,8 @@ void main() {
           ),
         );
 
-        expect(result.content, isNotEmpty);
-        final textContent = result.content.first as TextContent;
-
         if (result.isError == false) {
-          final data = jsonDecode(textContent.text) as Map<String, dynamic>;
+          final data = result.structuredContent!;
           final statements = data['statements'] as List;
           // All returned statements should be from 2023
           for (final stmt in statements) {
@@ -376,8 +359,7 @@ void main() {
         );
 
         expect(result.isError, isFalse);
-        final textContent = result.content.first as TextContent;
-        final data = jsonDecode(textContent.text) as Map<String, dynamic>;
+        final data = result.structuredContent!;
 
         final stmt = data['statements'][0] as Map<String, dynamic>;
         // These computed metrics should be present if data is available
