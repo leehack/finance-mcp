@@ -93,6 +93,10 @@ Analyze the trend and stability of the following metrics over the past $historyY
 ## Part 2: Projections & Valuation (Next $projectionYears Years)
 
 ### 3. Growth Assumptions
+**Logic Check:** Sustained high growth requires high ROE.
+- **Retention Ratio:** (1 - Payout Ratio)
+- **Sustainable Growth Rate:** ROE × Retention Ratio = ___%
+
 | Metric | Years 1-3 (CAGR) | Years 4-$projectionYears (CAGR) | Rationale |
 |--------|------------------|-----------------------|-----------|
 | Revenue | | | |
@@ -117,26 +121,56 @@ Analyze the trend and stability of the following metrics over the past $historyY
 - **Equity Value: \$___**
 - **DCF Value per Share: \$___**
 
-### 5. Valuation Method B: Exit Multiple (Quality Valuation)
+### 5. Valuation Method B: P/E Multiple Model (Historical Pricing)
+
+This method projects value based on Earnings Per Share (EPS) growth and historical Price-to-Earnings ratios.
 
 **Inputs:**
-- **Target Year $projectionYears EPS:** \$___
-- **Fair Exit PE Ratio:** ___x (Justify based on historical avg & future growth)
+- **Current EPS:** \$___
+- **Expected EPS Growth Rate:** ___%
+- **Target P/E Ratio:** ___ (Historical Average or Conservative estimate)
 
 **Calculation:**
-- Future Stock Price = Target EPS × Exit PE = \$___
-- **Present Value** (Discounted at desired return rate, e.g., 10-15%): **\$___**
+- **Future EPS (Year $projectionYears):** Current EPS × (1 + Growth Rate)^$projectionYears = \$___
+- **Future Stock Price:** Future EPS × Target P/E = **\$___**
+- **Fair Value (Discounted):** Future Price / (1 + Discount Rate)^$projectionYears = **\$___**
+
+### 6. Valuation Method C: ROE & Book Value Model (Quality Valuation)
+
+This method projects value based on Equity growth (Book Value) driven by ROE.
+
+**Inputs:**
+- **Current Book Value per Share (BVPS):** \$___
+- **Average ROE (5-10yr):** ___%
+- **Retention Ratio:** (1 - Payout Ratio) = ___%
+- **Sustainable Growth Rate:** ROE × Retention Ratio = **___%**
+- **Target P/B Ratio:** ___ (Historical Average)
+
+**Calculation:**
+- **Future BVPS (Year $projectionYears):** Current BVPS × (1 + Sustainable Growth Rate)^$projectionYears = \$___
+- **Future Stock Price:** Future BVPS × Target P/B = **\$___**
+- **Fair Value (Discounted):** Future Price / (1 + Discount Rate)^$projectionYears = **\$___**
 
 ---
 
 ## Part 3: Conclusion
 
-**Intrinsic Value Range:** \$___ (Conservative) to \$___ (Optimistic)
-**Current Price:** \$___
-**Margin of Safety:** ___%
+| Valuation Method | Value per Share (Buy Price) | Current Price | Margin of Safety |
+|------------------|-----------------------------|---------------|------------------|
+| **DCF** | \$___ | \$___ | ___% |
+| **PE Multiple** | \$___ | \$___ | ___% |
+| **ROE & Book Value** | \$___ | \$___ | ___% |
+
+### Returns Profile (5-Year Horizon)
+Based on the average of the models above:
+- **Current Price:** \$___
+- **Projected Future Price (Year $projectionYears):** \$___ (Avg of models)
+- **Implied 5-Year Upside:** ___%
+- **Implied Annual Return (CAGR):** ___% 
+*(Note: Compare this CAGR to your required rate of return. If it's >15%, the stock is likely a strong buy.)*
 
 **Verdict:**
-- [ ] Undervalued (Buy)
+- [ ] Undervalued (Buy) - >50% Margin of Safety preferred
 - [ ] Fairly Valued (Hold)
 - [ ] Overvalued (Sell)
 
