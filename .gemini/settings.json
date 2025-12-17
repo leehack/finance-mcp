@@ -1,0 +1,9 @@
+{
+	"mcpServers": {
+		"finance": {
+			"command": "dart",
+			"args": ["run", "bin/server.dart"]
+		}
+	}
+}
+

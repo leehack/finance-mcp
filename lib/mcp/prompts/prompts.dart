@@ -9,15 +9,15 @@ library;
 import 'analyze_company_prompt.dart';
 import 'base_prompt.dart';
 import 'compare_stocks_prompt.dart';
-import 'dcf_valuation_prompt.dart';
 import 'financial_health_prompt.dart';
+import 'intrinsic_value_prompt.dart';
 import 'investment_thesis_prompt.dart';
 
 export 'analyze_company_prompt.dart';
 export 'base_prompt.dart';
 export 'compare_stocks_prompt.dart';
-export 'dcf_valuation_prompt.dart';
 export 'financial_health_prompt.dart';
+export 'intrinsic_value_prompt.dart';
 export 'investment_thesis_prompt.dart';
 
 /// Creates all available prompts.
@@ -33,6 +33,6 @@ List<BasePrompt> createAllPrompts() => [
       AnalyzeCompanyPrompt(),
       CompareStocksPrompt(),
       InvestmentThesisPrompt(),
-      DcfValuationPrompt(),
+      IntrinsicValuePrompt(),
       FinancialHealthPrompt(),
     ];
