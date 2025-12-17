@@ -1,0 +1,25 @@
+# Dart
+.dart_tool/
+.packages
+build/
+pubspec.lock
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test outputs
+coverage/
+test/concept_discovery_results.json
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
