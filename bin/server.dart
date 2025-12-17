@@ -15,113 +15,42 @@ library;
 
 import 'dart:io';
 
-import 'package:args/args.dart';
 import 'package:finance_mcp/data/data.dart';
 import 'package:finance_mcp/mcp/mcp.dart';
+import 'package:finance_mcp/mcp/server_config.dart';
 import 'package:logging/logging.dart' as logging;
 import 'package:mcp_dart/mcp_dart.dart';
 
 void main(List<String> args) async {
-  final parser = _buildArgParser();
-
   try {
-    final results = parser.parse(args);
+    final config = ServerConfig.fromArgs(args);
 
-    if (results.flag('help')) {
-      _printUsage(parser);
+    if (config.help) {
+      ServerConfig.printUsage();
       return;
     }
 
-    _setupLogging(results.flag('verbose'));
+    _setupLogging(config.verbose);
     final logger = logging.Logger('FinanceMcpServer');
-
-    final transport = results.option('transport')!;
     final dataService = SecClient();
 
-    switch (transport) {
-      case 'stdio':
+    switch (config.transport) {
+      case TransportType.stdio:
         await _runStdioServer(dataService, logger);
-      case 'http':
+      case TransportType.http:
         await _runHttpServer(
           dataService,
           logger,
-          host: results.option('host')!,
-          port: int.parse(results.option('port')!),
-          path: results.option('path')!,
+          host: config.host,
+          port: config.port,
+          path: config.path,
         );
-      default:
-        stderr.writeln('Unknown transport: $transport');
-        _printUsage(parser);
-        exit(1);
     }
   } on FormatException catch (e) {
     stderr.writeln('Error: ${e.message}');
-    _printUsage(parser);
+    ServerConfig.printUsage();
     exit(1);
   }
-}
-
-ArgParser _buildArgParser() {
-  return ArgParser()
-    ..addOption(
-      'transport',
-      abbr: 't',
-      help: 'Transport type to use.',
-      allowed: ['stdio', 'http'],
-      defaultsTo: 'stdio',
-    )
-    ..addOption(
-      'host',
-      abbr: 'h',
-      help: 'Host to bind for HTTP transport.',
-      defaultsTo: '0.0.0.0',
-    )
-    ..addOption(
-      'port',
-      abbr: 'p',
-      help: 'Port to bind for HTTP transport.',
-      defaultsTo: '3000',
-    )
-    ..addOption(
-      'path',
-      help: 'Endpoint path for HTTP transport.',
-      defaultsTo: '/mcp',
-    )
-    ..addFlag(
-      'verbose',
-      abbr: 'v',
-      help: 'Enable verbose logging.',
-      negatable: false,
-    )
-    ..addFlag(
-      'help',
-      help: 'Show this help message.',
-      negatable: false,
-    );
-}
-
-void _printUsage(ArgParser parser) {
-  stderr
-    ..writeln('Finance MCP Server')
-    ..writeln()
-    ..writeln('Usage: dart run bin/server.dart [options]')
-    ..writeln()
-    ..writeln('Options:')
-    ..writeln(parser.usage)
-    ..writeln()
-    ..writeln('Examples:')
-    ..writeln(
-      '  dart run bin/server.dart                          # stdio transport',
-    )
-    ..writeln(
-      '  dart run bin/server.dart -t http                  # HTTP on 0.0.0.0:3000',
-    )
-    ..writeln(
-      '  dart run bin/server.dart -t http -p 8080          # HTTP on port 8080',
-    )
-    ..writeln(
-      '  dart run bin/server.dart -t http -h localhost     # HTTP on localhost only',
-    );
 }
 
 void _setupLogging(bool verbose) {
