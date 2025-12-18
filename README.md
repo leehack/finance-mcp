@@ -64,20 +64,71 @@ Exposes an StreamableHTTPS endpoint for remote connections.
 dart run bin/server.dart --transport http --port 3000
 ```
 
-### Configuration for Claude Desktop
+### Running with Docker
 
-Add the following to your `mcp.json` (usually in `~/Library/Application Support/Claude/mcp.json` on macOS):
+1.  **Build the image:**
+    ```bash
+    docker build -t finance-mcp .
+    ```
 
+### Configuration (Claude Desktop & Other Clients)
+
+#### 1. Docker (Stdio) - Recommended
+Run the server in a container managed by the client.
+
+Add to `mcp.json`:
 ```json
 {
   "mcpServers": {
-    "finance": {
+    "finance-docker": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "finance-mcp",
+        "--transport",
+        "stdio"
+      ]
+    }
+  }
+}
+```
+
+#### 2. Docker (StreamableHTTP)
+Run the server independently and connect via HTTP.
+
+1.  Start the container:
+    ```bash
+    docker run -p 3000:3000 finance-mcp
+    ```
+
+2.  Add to `mcp.json`:
+    ```json
+    {
+      "mcpServers": {
+        "finance-http": {
+          "url": "http://localhost:3000/mcp"
+        }
+      }
+    }
+    ```
+
+#### 3. Local Dart (Development)
+Run directly from source.
+
+Add to `mcp.json`:
+```json
+{
+  "mcpServers": {
+    "finance-local": {
       "command": "dart",
       "args": ["run", "/absolute/path/to/finance-mcp/bin/server.dart"]
     }
   }
 }
 ```
+
 
 *Note: Replace `/absolute/path/to/finance-mcp` with the actual path to your project.*
 

@@ -2,8 +2,22 @@
 	"mcpServers": {
 		"finance": {
 			"command": "dart",
-			"args": ["run", "bin/server.dart"]
+			"args": [ "run", "bin/server.dart" ]
 		}
+		// "finance-docker": {
+		// 	"command": "docker",
+		// 	"args": [
+		// 		"run",
+		// 		"-i",
+		// 		"--rm",
+		// 		"finance-mcp",
+		// 		"--transport",
+		// 		"stdio"
+		// 	]
+		// }
+		// "finance-http": {
+		// 	"url": "http://localhost:3000/mcp"
+		// }
 	}
 }
 
