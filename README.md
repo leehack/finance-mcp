@@ -33,7 +33,7 @@ The server provides structured prompts to help LLMs generate financial insights:
 2.  **`financial_health`**: Focused deep dive into solvency, liquidity, and profitability metrics.
 3.  **`compare_stocks`**: Comparative analysis of two or more companies.
 4.  **`investment_thesis`**: Structured framework for building a bull/bear investment case.
-5.  **`dcf_valuation`**: Template for performing a Discounted Cash Flow valuation.
+5.  **`intrinsic_value`**: Comprehensive intrinsic value analysis combining DCF and Quality (PE, ROE) analysis.
 
 ## Prerequisites
 
