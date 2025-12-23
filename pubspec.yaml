@@ -1,5 +1,6 @@
 name: finance_mcp
 description: A MCP server to fetch financial statements from SEC EDGAR.
+repository: https://github.com/leehack/finance-mcp
 version: 1.0.0
 environment:
   sdk: '>=3.0.0 <4.0.0'
