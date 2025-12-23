@@ -8,7 +8,8 @@ This server exposes tools to fetch company information and financial statements,
 
 - **Fetch Company Info**: Get CIK, name, and tickers for a company.
 - **Fetch Financial Statements**: Retrieve Balance Sheets, Income Statements, and Cash Flows (Annual/Quarterly) with up to 10 years of history.
-- **Financial Analysis Prompts**: Built-in templates for analyzing companies, comparing stocks, and valuing assets.
+- **Fetch SEC Filings**: Access 8-K, 10-K, and 10-Q filings for sentiment analysis.
+- **Financial Analysis Prompts**: Built-in templates for comprehensive company analysis and stock comparisons.
 - **Multiple Transports**: Supports both `stdio` (default) and `StreamableHTTP` (SSE/Post) transports.
 - **Modular Architecture**: Clean separation of data, MCP protocol, and server logic.
 - **SEC Integration**: Compliant with SEC EDGAR API requirements (User-Agent).
@@ -19,21 +20,24 @@ The server exposes the following tools:
 
 1.  **`get_company_info(ticker: string)`**
     *   Retrieves metadata (CIK, name) for a given stock ticker.
-2.  **`get_financial_statements(ticker: string, statement_type: string, period: string?, year: int?)`**
-    *   Fetches financial statements.
-    *   `statement_type`: `balance_sheet`, `income_statement`, or `cash_flow`.
+2.  **`get_financial_statements(ticker: string, period: string?, year: int?, years: int?)`**
+    *   Fetches comprehensive financial statements (Income, Balance Sheet, Cash Flow) with computed metrics (ROE, ROIC).
     *   `period`: `annual` (default) or `quarterly`.
-    *   `year`: Optional specific year. Checks recent years if omitted.
+    *   `year`: Optional specific year to retrieve.
+    *   `years`: Number of historical years to fetch (default: 5).
+3.  **`get_sec_filings(ticker: string, forms: string[]?, limit: int?, includeContent: bool?)`**
+    *   Retrieves SEC EDGAR filings lists and optionally full text content.
+    *   `forms`: List of form types (e.g., `['8-K', '10-K']`).
+    *   `includeContent`: If true, fetches the full text body of the filings (useful for sentiment analysis).
 
 ## Prompts
 
 The server provides structured prompts to help LLMs generate financial insights:
 
-1.  **`analyze_company`**: Comprehensive financial analysis covering business overview, health, growth, risks, and investment assessment.
-2.  **`financial_health`**: Focused deep dive into solvency, liquidity, and profitability metrics.
-3.  **`compare_stocks`**: Comparative analysis of two or more companies.
-4.  **`investment_thesis`**: Structured framework for building a bull/bear investment case.
-5.  **`intrinsic_value`**: Comprehensive intrinsic value analysis combining DCF and Quality (PE, ROE) analysis.
+1.  **`comprehensive_analysis`**
+    *   Generates a complete stock analysis covering financial health (profitability, balance sheet, cash flow), intrinsic value (DCF, P/E, ROE models), business quality (moat, management), sentiment (SEC filings, news), and an actionable investment thesis.
+2.  **`compare_stocks`**
+    *   Performs a side-by-side comparative analysis of multiple stocks across financial health, valuation, business quality, and sentiment.
 
 ## Prerequisites
 
