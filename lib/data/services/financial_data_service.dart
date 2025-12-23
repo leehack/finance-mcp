@@ -26,7 +26,7 @@ abstract class FinancialDataService {
 
   /// Fetch recent SEC filings for a company.
   ///
-  /// [forms] filters by form type (e.g., ['8-K', '10-K']).
+  /// [forms] filters by form type (e.g., `['8-K', '10-K']`).
   /// [limit] caps the number of filings returned.
   Future<List<SecFiling>> getRecentFilings(
     String ticker, {

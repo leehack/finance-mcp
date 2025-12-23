@@ -11,13 +11,28 @@ class BalanceSheet {
     this.longTermDebt,
   });
 
+  /// Total assets of the company.
   final double? totalAssets;
+
+  /// Total liabilities of the company.
   final double? totalLiabilities;
+
+  /// Total stockholders' equity.
   final double? stockholdersEquity;
+
+  /// Cash and cash equivalents.
   final double? cashAndEquivalents;
+
+  /// Current assets (assets expected to be sold/used within one year).
   final double? currentAssets;
+
+  /// Current liabilities (obligations due within one year).
   final double? currentLiabilities;
+
+  /// Non-current liabilities (long-term obligations).
   final double? nonCurrentLiabilities;
+
+  /// Long-term debt.
   final double? longTermDebt;
 
   /// Current ratio (currentAssets / currentLiabilities).
