@@ -28,10 +28,18 @@ enum FinancialMetric {
   ),
   longTermDebt('Long-term Debt', 'Debt obligations due after 1 year'),
 
-  // Cash Flow (4)
+  // Cash Flow (6)
   operatingCashFlow('Operating Cash Flow', 'Cash from core operations'),
   investingCashFlow('Investing Cash Flow', 'Cash from investments'),
   financingCashFlow('Financing Cash Flow', 'Cash from financing activities'),
+  capitalExpenditures(
+    'Capital Expenditures',
+    'Payments for property, plant, and equipment',
+  ),
+  depreciationAmortization(
+    'Depreciation & Amortization',
+    'Non-cash charges for asset depreciation and amortization',
+  ),
   dividendsPaid('Dividends Paid', 'Total cash dividends paid to shareholders'),
 
   // Other (2)

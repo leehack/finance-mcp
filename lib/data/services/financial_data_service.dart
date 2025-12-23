@@ -1,5 +1,6 @@
 import '../models/company_financials.dart';
 import '../models/metric_history.dart';
+import '../models/sec_filing.dart';
 
 /// Abstract interface for financial data access.
 ///
@@ -22,6 +23,21 @@ abstract class FinancialDataService {
     bool includeQuarterly = true,
     Set<FinancialMetric>? metrics,
   });
+
+  /// Fetch recent SEC filings for a company.
+  ///
+  /// [forms] filters by form type (e.g., ['8-K', '10-K']).
+  /// [limit] caps the number of filings returned.
+  Future<List<SecFiling>> getRecentFilings(
+    String ticker, {
+    List<String>? forms,
+    int limit = 10,
+  });
+
+  /// Fetch the text content of a specific filing.
+  ///
+  /// Returns the text extracted from the filing document.
+  Future<String> getFilingContent(SecFiling filing);
 
   /// Close any underlying resources (e.g., HTTP client).
   void close();

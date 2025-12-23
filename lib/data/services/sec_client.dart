@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:html/parser.dart' as html_parser;
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 
 import '../models/company_financials.dart';
 import '../models/metric_history.dart';
+import '../models/sec_filing.dart';
 import 'financial_data_service.dart';
 import 'financial_parser.dart';
 
@@ -24,6 +26,7 @@ class SecClient implements FinancialDataService {
   // SEC requires a User-Agent in the format: "Sample Company Name AdminContact@<domain>.com"
   static const String _userAgent = 'FinanceMCPBot jhin.lee@example.com';
   static const String _baseUrl = 'https://data.sec.gov/api/xbrl';
+  static const String _submissionsUrl = 'https://data.sec.gov/submissions';
   static const String _tickersUrl =
       'https://www.sec.gov/files/company_tickers.json';
 
@@ -97,6 +100,121 @@ class SecClient implements FinancialDataService {
         metricsToFetch: metrics,
       ),
     );
+  }
+
+  @override
+  Future<List<SecFiling>> getRecentFilings(
+    String ticker, {
+    List<String>? forms,
+    int limit = 10,
+  }) async {
+    final cik = await getCik(ticker);
+    if (cik == null) {
+      throw Exception('Ticker $ticker not found.');
+    }
+
+    final cikStr = cik.toString().padLeft(10, '0');
+    final url = '$_submissionsUrl/CIK$cikStr.json';
+
+    _logger.info('Fetching filings for $ticker (CIK: $cikStr)...');
+    final response = await _get(url);
+    final data = json.decode(response.body) as Map<String, dynamic>;
+
+    // Parse recent filings from the response
+    final recentFilings = data['filings']?['recent'] as Map<String, dynamic>?;
+    if (recentFilings == null) {
+      return [];
+    }
+
+    final accessionNumbers = recentFilings['accessionNumber'] as List<dynamic>;
+    final formTypes = recentFilings['form'] as List<dynamic>;
+    final filingDates = recentFilings['filingDate'] as List<dynamic>;
+    final primaryDocuments = recentFilings['primaryDocument'] as List<dynamic>;
+    final descriptions =
+        recentFilings['primaryDocDescription'] as List<dynamic>?;
+
+    final filings = <SecFiling>[];
+    for (var i = 0;
+        i < accessionNumbers.length && filings.length < limit;
+        i++) {
+      final form = formTypes[i] as String;
+
+      // Filter by form type if specified
+      if (forms != null && !forms.contains(form)) {
+        continue;
+      }
+
+      filings.add(
+        SecFiling(
+          accessionNumber: accessionNumbers[i] as String,
+          form: form,
+          filingDate: DateTime.parse(filingDates[i] as String),
+          primaryDocument: primaryDocuments[i] as String,
+          description: descriptions?[i] as String? ?? '',
+          cik: cik,
+        ),
+      );
+    }
+
+    _logger.info('Found ${filings.length} filings for $ticker.');
+    return filings;
+  }
+
+  @override
+  Future<String> getFilingContent(SecFiling filing) async {
+    _logger.info(
+      'Fetching content for ${filing.form} (${filing.accessionNumber})...',
+    );
+    final response = await _get(filing.url);
+
+    // Parse HTML and extract text content
+    return _extractTextFromHtml(response.body);
+  }
+
+  /// Extracts plain text from HTML content.
+  ///
+  /// Removes all HTML tags, scripts, styles, XBRL metadata, and cleans up
+  /// whitespace for easier sentiment analysis.
+  String _extractTextFromHtml(String html) {
+    final document = html_parser.parse(html);
+
+    // Remove script, style, and metadata elements
+    document.querySelectorAll('script, style, noscript, meta, link').forEach(
+          (e) => e.remove(),
+        );
+
+    // Remove XBRL/iXBRL hidden elements (these contain metadata, not readable text)
+    // ix:hidden contains XBRL context data that shows as garbage text
+    document
+        .querySelectorAll('[style*="display:none"], [style*="display: none"]')
+        .forEach(
+          (e) => e.remove(),
+        );
+
+    // Remove elements with common XBRL namespaces that contain metadata
+    document
+        .querySelectorAll(r'ix\:hidden, ix\:header, ix\:references')
+        .forEach(
+          (e) => e.remove(),
+        );
+
+    // Get text content
+    var text = document.body?.text ?? '';
+
+    // Remove common XBRL metadata patterns that leak through
+    // Pattern: sequences of "true/false" and ticker identifiers
+    text = text.replaceAll(RegExp('(true|false){3,}'), '');
+    text = text.replaceAll(RegExp('NASDAQ{2,}'), '');
+    text = text.replaceAll(RegExp(r'\d{10}\d{10}[\d-]+'), '');
+
+    // Clean up whitespace: collapse multiple spaces/newlines
+    text = text
+        .replaceAll(RegExp(r'[ \t]+'), ' ')
+        .replaceAll(RegExp(r'\n[ \t]*\n'), '\n\n')
+        .replaceAll(RegExp(r'\n{3,}'), '\n\n')
+        .trim();
+
+    return text;
   }
 
   Future<http.Response> _get(String url) async {

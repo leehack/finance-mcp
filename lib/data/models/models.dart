@@ -14,3 +14,4 @@ export 'fiscal_period.dart';
 export 'income_statement.dart';
 export 'metric_history.dart';
 export 'metric_value.dart';
+export 'sec_filing.dart';

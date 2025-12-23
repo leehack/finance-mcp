@@ -129,6 +129,10 @@ class FinancialParser {
         operatingCashFlow: getValue(FinancialMetric.operatingCashFlow, period),
         investingCashFlow: getValue(FinancialMetric.investingCashFlow, period),
         financingCashFlow: getValue(FinancialMetric.financingCashFlow, period),
+        capitalExpenditures:
+            getValue(FinancialMetric.capitalExpenditures, period),
+        depreciationAmortization:
+            getValue(FinancialMetric.depreciationAmortization, period),
         dividendsPaid: getValue(FinancialMetric.dividendsPaid, period),
       );
 

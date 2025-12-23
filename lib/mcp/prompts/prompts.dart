@@ -6,19 +6,13 @@
 /// Prompts allow LLMs to request structured input templates for common tasks.
 library;
 
-import 'analyze_company_prompt.dart';
 import 'base_prompt.dart';
 import 'compare_stocks_prompt.dart';
-import 'financial_health_prompt.dart';
-import 'intrinsic_value_prompt.dart';
-import 'investment_thesis_prompt.dart';
+import 'comprehensive_analysis_prompt.dart';
 
-export 'analyze_company_prompt.dart';
 export 'base_prompt.dart';
 export 'compare_stocks_prompt.dart';
-export 'financial_health_prompt.dart';
-export 'intrinsic_value_prompt.dart';
-export 'investment_thesis_prompt.dart';
+export 'comprehensive_analysis_prompt.dart';
 
 /// Creates all available prompts.
 ///
@@ -30,9 +24,6 @@ export 'investment_thesis_prompt.dart';
 /// }
 /// ```
 List<BasePrompt> createAllPrompts() => [
-      AnalyzeCompanyPrompt(),
+      ComprehensiveAnalysisPrompt(),
       CompareStocksPrompt(),
-      InvestmentThesisPrompt(),
-      IntrinsicValuePrompt(),
-      FinancialHealthPrompt(),
     ];

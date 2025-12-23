@@ -42,11 +42,12 @@ void main() {
       test('lists available tools', () async {
         final result = await client.listTools();
 
-        expect(result.tools.length, equals(2));
+        expect(result.tools.length, equals(3));
 
         final toolNames = result.tools.map((t) => t.name).toSet();
         expect(toolNames, contains('get_company_info'));
         expect(toolNames, contains('get_financial_statements'));
+        expect(toolNames, contains('get_sec_filings'));
       });
 
       test('get_company_info tool has valid outputSchema', () async {
