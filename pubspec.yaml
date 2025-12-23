@@ -12,6 +12,10 @@ dependencies:
   logging: ^1.3.0
   mcp_dart: ^1.1.1
 
+
+executables:
+  finance_mcp: server
+
 dev_dependencies:
   test: ^1.25.0
   lints: ^6.0.0

@@ -2,14 +2,33 @@
 
 This package provides a Model Context Protocol (MCP) server for retrieving financial data.
 
+## Installation
+ 
+```bash
+dart pub global activate finance_mcp
+
+# Or for Dart 3.10+:
+dart install finance_mcp
+```
+ 
+### From Source
+ 
+```bash
+dart pub get
+```
+ 
 ## Running the Server
-
-You can run the server using the `dart run` command:
-
+ 
+If installed globally:
+```bash
+dart pub global run finance_mcp
+```
+ 
+From source:
 ```bash
 # Run with default Stdio transport (best for Claude Desktop)
 dart run bin/server.dart
-
+ 
 # Run with HTTP transport
 dart run bin/server.dart --transport http --port 3000
 ```
@@ -19,6 +38,19 @@ dart run bin/server.dart --transport http --port 3000
 ### Claude Desktop
 
 Add the following to your `mcp.json` configuration:
+
+```json
+{
+  "mcpServers": {
+    "finance-mcp": {
+      "command": "dart",
+      "args": ["pub", "global", "run", "finance_mcp"]
+    }
+  }
+}
+```
+
+### From Source (Local Development)
 
 ```json
 {

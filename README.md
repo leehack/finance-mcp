@@ -45,8 +45,22 @@ The server provides structured prompts to help LLMs generate financial insights:
 
 ## Setup
 
-1.  Install dependencies:
+### Installation
+
+1.  Global installation (recommended for general use):
     ```bash
+    dart pub global activate finance_mcp
+    ```
+
+    Or for Dart 3.10+:
+    ```bash
+    dart install finance_mcp
+    ```
+
+2.  Local installation (for development):
+    ```bash
+    git clone https://github.com/leehack/finance-mcp.git
+    cd finance_mcp
     dart pub get
     ```
 
@@ -128,6 +142,21 @@ Add to `mcp.json`:
     "finance-local": {
       "command": "dart",
       "args": ["run", "/absolute/path/to/finance-mcp/bin/server.dart"]
+    }
+  }
+}
+```
+
+#### 4. Pub Global (Published Package)
+If you installed via `dart pub global activate finance_mcp`:
+
+Add to `mcp.json`:
+```json
+{
+  "mcpServers": {
+    "finance-mcp": {
+      "command": "dart",
+      "args": ["pub", "global", "run", "finance_mcp"]
     }
   }
 }
