@@ -151,12 +151,31 @@ Add to `mcp.json`:
 If you installed via `dart pub global activate finance_mcp`:
 
 Add to `mcp.json`:
+### macOS / Linux
 ```json
 {
   "mcpServers": {
     "finance-mcp": {
-      "command": "dart",
-      "args": ["pub", "global", "run", "finance_mcp"]
+      "command": "/bin/sh",
+      "args": [
+        "-c",
+        "dart pub global activate finance_mcp 1>&2 && $HOME/.pub-cache/bin/finance_mcp"
+      ]
+    }
+  }
+}
+```
+
+### Windows
+```json
+{
+  "mcpServers": {
+    "finance-mcp": {
+      "command": "cmd.exe",
+      "args": [
+        "/c",
+        "dart pub global activate finance_mcp > NUL && %LOCALAPPDATA%\\Pub\\Cache\\bin\\finance_mcp.bat"
+      ]
     }
   }
 }

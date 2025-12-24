@@ -7,8 +7,6 @@ This package provides a Model Context Protocol (MCP) server for retrieving finan
 ```bash
 dart pub global activate finance_mcp
 
-# Or for Dart 3.10+:
-dart install finance_mcp
 ```
  
 ### From Source
